@@ -70,13 +70,7 @@ export const getCategoriesAndDocuments = async () => {
 
   const q = query(collectionRef); // snapshop
   const querySnapshot = await getDocs(q); // fetch the snapshot
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
-  return categoryMap;
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
 // Getting the data from authentication and store it in the Firestore
