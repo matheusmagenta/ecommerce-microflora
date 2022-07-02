@@ -1,11 +1,10 @@
-if ((import.meta.env.NODE_ENV = "development")) {
-  require("dotenv").config();
-}
+require("dotenv").config();
 const stripe = require("stripe")(import.meta.env.VITE_STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
   try {
     const { amount } = JSON.parse(event.body);
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
@@ -18,6 +17,7 @@ exports.handler = async (event) => {
     };
   } catch (error) {
     console.log({ error });
+
     return {
       statusCode: 400,
       body: JSON.stringify({ error }),
