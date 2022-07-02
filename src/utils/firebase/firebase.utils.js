@@ -18,7 +18,6 @@ import {
   writeBatch,
   query,
   getDocs,
-  QuerySnapshot,
 } from "firebase/firestore";
 
 // Web app's Firebase configuration
@@ -38,12 +37,11 @@ const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
-
 export const auth = getAuth();
-export const signInWitGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWitGoogleRedirect = () =>
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
-
 // Initialize db
 export const db = getFirestore();
 
@@ -78,6 +76,7 @@ export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
 ) => {
+  if (!userAuth) return;
   // create a doc reference for the user trying to authenticate
   const userDocRef = doc(db, "users", userAuth.uid);
 
@@ -103,7 +102,7 @@ export const createUserDocumentFromAuth = async (
   }
 
   // if user exists
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -112,13 +111,26 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signOutUser = () => signOut(auth);
+export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
