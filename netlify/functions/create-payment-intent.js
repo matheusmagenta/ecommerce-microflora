@@ -1,4 +1,6 @@
-require("dotenv").config();
+if ((import.meta.env.NODE_ENV = "development")) {
+  require("dotenv").config();
+}
 const stripe = require("stripe")(import.meta.env.VITE_STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
