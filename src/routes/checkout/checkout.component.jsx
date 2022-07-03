@@ -1,5 +1,4 @@
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
-import "./checkout.styles.scss";
 import { useSelector } from "react-redux";
 import {
   selectCartItems,
@@ -7,39 +6,43 @@ import {
 } from "../../store/cart/cart.selector";
 import PaymentForm from "../../components/payment-form/payment-form.component";
 
+import {
+  CheckoutPageContainer,
+  CheckoutHeaderContainer,
+  HeaderBlockContainer,
+  TotalContainer,
+  WarningContainer,
+} from "./checkout.styles";
+
 const Checkout = () => {
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
 
   return (
-    <div className="checkout-container">
-      <div className="checkout-header">
-        <div className="header-block">
+    <CheckoutPageContainer>
+      <CheckoutHeaderContainer>
+        <HeaderBlockContainer>
           <span>Product</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlockContainer>
+        <HeaderBlockContainer>
           <span>Description</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlockContainer>
+        <HeaderBlockContainer>
           <span>Quantity</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlockContainer>
+        <HeaderBlockContainer>
           <span>Price</span>
-        </div>
-        <div className="header-block">
+        </HeaderBlockContainer>
+        <HeaderBlockContainer>
           <span>Remove</span>
-        </div>
-      </div>
-      <div>
-        {cartItems.map((cartItem) => (
-          <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-        ))}
-        <span className="total">Total: $ {cartTotal}</span>
-      </div>
-      <div>
-        <PaymentForm />
-      </div>
-    </div>
+        </HeaderBlockContainer>
+      </CheckoutHeaderContainer>
+      {cartItems.map((cartItem) => (
+        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+      ))}
+      <TotalContainer>TOTAL: ${cartTotal}</TotalContainer>
+      <PaymentForm />
+    </CheckoutPageContainer>
   );
 };
 
