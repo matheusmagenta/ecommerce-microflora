@@ -10,6 +10,7 @@ import Checkout from "./routes/checkout/checkout.component";
 import { checkUserSession } from "./store/user/user.action";
 
 import { GlobalStyle } from "./global.styles";
+import Products from "./components/products/products.component";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="shop/*" element={<Shop />} />
           <Route path="auth" element={<Authentication />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="products" element={<Products />} />
         </Route>
       </Routes>
     </>

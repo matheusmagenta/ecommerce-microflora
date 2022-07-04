@@ -28,6 +28,9 @@ const Navigation = () => {
           <CrwnLogo className="logo" />
         </Link>
         <div className="nav-links-container">
+          <Link className="nav-link" to="/products">
+            PRODUCTS
+          </Link>
           <Link className="nav-link" to="/shop">
             SHOP
           </Link>
